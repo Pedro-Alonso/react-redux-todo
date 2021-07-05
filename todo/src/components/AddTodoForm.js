@@ -10,16 +10,16 @@ const AddTodoForm = () => {
 		event.preventDefault();
 		if (value) {
 			dispatch(
-				addTodoAsync({
-					title: value,
-				})
+				addTodoAsync({ title: value })
 			);
 		}
 	};
 
 	return (
-		<form onSubmit={onSubmit} className='form-inline mt-3 mb-3'>
-			<label className='sr-only'>Name</label>
+		<form 
+			className='form-inline mt-3 mb-3'
+			onSubmit={onSubmit}
+		>
 			<input
 				type='text'
 				className='form-control mb-2 mr-sm-2'
@@ -27,7 +27,6 @@ const AddTodoForm = () => {
 				value={value}
 				onChange={(event) => setValue(event.target.value)}
 			/>
-
 			<button type='submit' className='btn btn-primary mb-2'>
 				Submit
 			</button>

@@ -6,11 +6,15 @@ const TodoItem = ({ id, title, completed }) => {
 	const dispatch = useDispatch();
 
 	const handleCheckboxClick = () => {
-		dispatch(toggleCompleteAsync({ id, completed: !completed }));
+		dispatch(
+			toggleCompleteAsync({ id, completed: !completed })
+		);
 	};
 
 	const handleDeleteClick = () => {
-		dispatch(deleteTodoAsync({ id }));
+		dispatch(
+			deleteTodoAsync({ id })
+		);
 	};
 
 	return (
@@ -22,10 +26,13 @@ const TodoItem = ({ id, title, completed }) => {
 						className='mr-3'
 						checked={completed}
 						onClick={handleCheckboxClick}
-					></input>
+					/>
 					{title}
 				</span>
-				<button onClick={handleDeleteClick} className='btn btn-danger'>
+				<button
+					className='btn btn-danger'
+					onClick={handleDeleteClick}
+				>
 					Delete
 				</button>
 			</div>

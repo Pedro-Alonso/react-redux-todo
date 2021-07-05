@@ -1,12 +1,14 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { nanoid } from 'nanoid';
 
+const url = 'http://localhost:8000/todos';
+
 export const getTodosAsync = createAsyncThunk(
 	'todos/getTodosAsync',
 	async () => {
-		const resp = await fetch('http://localhost:8000/todos');
-		if (resp.ok) {
-			const todos = await resp.json();
+		const res = await fetch(url);
+		if (res.ok) {
+			const todos = await res.json();
 			return { todos };
 		}
 	}
@@ -15,7 +17,7 @@ export const getTodosAsync = createAsyncThunk(
 export const addTodoAsync = createAsyncThunk(
 	'todos/addTodoAsync',
 	async (payload) => {
-		const resp = await fetch('http://localhost:8000/todos', {
+		const res = await fetch(url, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
@@ -23,8 +25,8 @@ export const addTodoAsync = createAsyncThunk(
 			body: JSON.stringify({ title: payload.title }),
 		});
 
-		if (resp.ok) {
-			const todo = await resp.json();
+		if (res.ok) {
+			const todo = await res.json();
 			return { todo };
 		}
 	}
@@ -33,7 +35,7 @@ export const addTodoAsync = createAsyncThunk(
 export const toggleCompleteAsync = createAsyncThunk(
 	'todos/completeTodoAsync',
 	async (payload) => {
-		const resp = await fetch(`http://localhost:8000/todos/${payload.id}`, {
+		const res = await fetch(`${url}/${payload.id}`, {
 			method: 'PATCH',
 			headers: {
 				'Content-Type': 'application/json',
@@ -41,8 +43,8 @@ export const toggleCompleteAsync = createAsyncThunk(
 			body: JSON.stringify({ completed: payload.completed }),
 		});
 
-		if (resp.ok) {
-			const todo = await resp.json();
+		if (res.ok) {
+			const todo = await res.json();
 			return { todo };
 		}
 	}
@@ -51,11 +53,11 @@ export const toggleCompleteAsync = createAsyncThunk(
 export const deleteTodoAsync = createAsyncThunk(
 	'todos/deleteTodoAsync',
 	async (payload) => {
-		const resp = await fetch(`http://localhost:8000/todos/${payload.id}`, {
+		const res = await fetch(`${url}/${payload.id}`, {
 			method: 'DELETE',
 		});
 
-		if (resp.ok) {
+		if (res.ok) {
 			return { id: payload.id };
 		}
 	}
@@ -64,23 +66,6 @@ export const deleteTodoAsync = createAsyncThunk(
 export const todoSlice = createSlice({
 	name: 'todos',
 	initialState: [],
-	reducers: {
-		addTodo: (state, action) => {
-			const todo = {
-				id: nanoid(),
-				title: action.payload.title,
-				completed: false,
-			};
-			state.push(todo);
-		},
-		toggleComplete: (state, action) => {
-			const index = state.findIndex((todo) => todo.id === action.payload.id);
-			state[index].completed = action.payload.completed;
-		},
-		deleteTodo: (state, action) => {
-			return state.filter((todo) => todo.id !== action.payload.id);
-		},
-	},
 	extraReducers: {
 		[getTodosAsync.fulfilled]: (state, action) => {
 			return action.payload.todos;
@@ -99,7 +84,5 @@ export const todoSlice = createSlice({
 		},
 	},
 });
-
-export const { addTodo, toggleComplete, deleteTodo } = todoSlice.actions;
 
 export default todoSlice.reducer;

@@ -8,7 +8,9 @@ const TodoList = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(getTodosAsync());
+        dispatch(
+			getTodosAsync()
+		);
     }, [dispatch]);
 
 	return (
