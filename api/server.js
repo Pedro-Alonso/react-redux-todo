@@ -57,9 +57,10 @@ app.patch('/todos/:id', (req, res) => {
 	const index = todos.findIndex((todo) => todo.id === id);
 	if (index > -1) {
 		todos[index].completed = Boolean(req.body.completed);
+		return res.send(todos[index]);
 	}
 
-	return res.send(todos[index]);
+	return null;
 });
 
 app.delete('/todos/:id', (req, res) => {
